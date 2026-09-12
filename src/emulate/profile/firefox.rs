@@ -516,3 +516,36 @@ mod_generator!(
         )
     ]
 );
+
+// Firefox 152 drops TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA from its cipher
+// list; every other field (extensions, curves, key shares, sigalgs, etc.)
+// is unchanged from ff135, so this gets its own tls_options! call instead
+// of delegating to ff135::build_emulation like ff136-ff151 do.
+mod_generator!(
+    ff152,
+    tls_options!(4, CIPHER_LIST_3, CURVES_2, KEY_SHARES_2),
+    http2_options!(1),
+    header_initializer_with_zstd,
+    [
+        (
+            Windows,
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0"
+        ),
+        (
+            MacOS,
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:152.0) Gecko/20100101 Firefox/152.0"
+        ),
+        (
+            Linux,
+            "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:152.0) Gecko/20100101 Firefox/152.0"
+        ),
+        (
+            Android,
+            "Mozilla/5.0 (Android 13; Mobile; rv:152.0) Gecko/152.0 Firefox/152.0"
+        ),
+        (
+            IOS,
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 18_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/152.0 Mobile/15E148 Safari/605.1.15"
+        )
+    ]
+);
